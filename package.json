@@ -1,0 +1,14 @@
+{
+  "name": "esg-carbon-energy-intelligence-platform",
+  "version": "0.7.0-rc.1",
+  "private": true,
+  "scripts": {
+    "prepare:deploy": "node prepare_deploy.js",
+    "check": "node --check worker.js",
+    "dev": "npm run prepare:deploy && wrangler dev -c .deploy/wrangler.jsonc",
+    "deploy": "npm run prepare:deploy && wrangler deploy -c .deploy/wrangler.jsonc"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

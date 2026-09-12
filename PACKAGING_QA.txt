@@ -1,0 +1,10 @@
+ESG v0.7.0-rc.1 Packaging QA
+[PASS] public/index.html
+[PASS] offline HTML
+[PASS] Worker syntax
+[PASS] wrangler.jsonc
+[PASS] package.json
+[PASS] D1 migration schema
+[PASS] device acceptance test
+[PASS] deployment guide
+[PASS] release checklist

@@ -1,0 +1,15 @@
+手機 GitHub 上傳檔案清單
+
+- .gitignore
+- CHANGELOG.md
+- DEPLOYMENT_GUIDE.md
+- DEVICE_ACCEPTANCE_TEST.md
+- MOBILE_UPLOAD_GUIDE.md
+- PACKAGING_QA.txt
+- README.md
+- RELEASE_CHECKLIST.md
+- index.html
+- package.json
+- prepare_deploy.js
+- schema.sql
+- worker.js

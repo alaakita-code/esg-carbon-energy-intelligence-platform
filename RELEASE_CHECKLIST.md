@@ -1,0 +1,13 @@
+# Release Candidate Check v0.7.0-rc.1
+- [x] 靜態／程式結構 QA 51/51 PASS
+- [x] Workers 專案結構
+- [x] Offline HTML
+- [x] health/version/status API
+- [x] D1 初始 schema
+- [ ] Android Chrome 實機驗收
+- [ ] Desktop Chrome 實機驗收
+- [ ] 建 GitHub Repository
+- [ ] 建立 v0.7.0-rc.1 Release
+- [ ] Cloudflare Preview
+- [ ] Cloudflare Production
+- [ ] D1 binding / migrations

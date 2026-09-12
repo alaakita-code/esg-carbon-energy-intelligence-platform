@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ESG Carbon & Energy Intelligence Platform v0.7.0</title>
+<style>
+:root{--bg:#f8faf8;--surface:#fff;--ink:#183127;--muted:#738179;--line:#e2ebe5;--green:#6aa58f;--mint:#f0f8f4;--blue:#6b97d6;--amber:#d7a65f;--red:#c86b6b;--shadow:0 8px 24px rgba(31,69,54,.05)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans TC","Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}button,input,select{font:inherit}button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.hero{max-width:1440px;margin:auto;padding:16px 22px 14px;display:flex;align-items:center;gap:16px}.brand-mark{width:54px;height:54px;border-radius:18px;background:linear-gradient(145deg,#8dc7b0,#6aa58f);display:grid;place-items:center;color:#fff;box-shadow:var(--shadow);font-size:28px}.brand-text{min-width:0;flex:1}.brand-title{font-size:clamp(19px,2.3vw,30px);font-weight:800;letter-spacing:-.02em}.brand-sub{color:var(--muted);font-size:13px;margin-top:2px}.version{font-size:12px;color:var(--muted);text-align:right}
+.nav-wrap{max-width:1440px;margin:auto;padding:0 22px 14px}.nav{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:14px;padding:11px 14px;min-height:44px;display:flex;align-items:center;gap:8px;flex:0 0 auto;transition:.2s}.nav button:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(20,35,27,.07)}.nav button.active{background:#eaf4ef;color:#315f4f;border-color:#b9d5ca;box-shadow:0 4px 12px rgba(71,125,112,.10);font-weight:700}
+main{max-width:1440px;margin:auto;padding:24px 22px 92px}.status-strip{background:linear-gradient(135deg,#eef7f3,#e2f0e9);color:var(--ink);border-radius:22px;padding:20px;display:grid;grid-template-columns:1.4fr .8fr;gap:16px;align-items:center;box-shadow:var(--shadow);overflow:hidden;position:relative}.status-strip:after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 60%);right:-60px;top:-80px;animation:floatGlow 5s ease-in-out infinite}@keyframes floatGlow{50%{transform:translate(-16px,16px) scale(1.05)}}.status-title{font-size:clamp(20px,3vw,30px);font-weight:800}.status-copy{opacity:.92;margin-top:6px}.period-box{border:1px solid #d3e5dc;background:rgba(255,255,255,.74);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center;justify-content:space-between;position:relative;z-index:1}.action-btn{border:0;border-radius:12px;padding:11px 14px;background:#d7ece2;color:#315f4f;font-weight:800;transition:.2s}.action-btn:hover{transform:translateY(-1px) scale(1.01)}
+.page{display:none;animation:fadeIn .24s ease}.page.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:34px 0 16px}.section-head h2{font-size:clamp(24px,4vw,34px);margin:0;letter-spacing:-.025em}.section-head p{margin:4px 0 0;color:var(--muted)}
+.grid{display:grid;gap:18px}.kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.kpi-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow);transition:.2s;position:relative;overflow:hidden}.kpi-card:hover{transform:translateY(-2px)}.kpi-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.kpi-ico{width:42px;height:42px;border-radius:14px;background:var(--mint);display:grid;place-items:center;color:var(--green);font-weight:800}.kpi-label{color:var(--muted);font-size:13px}.kpi-value{font-size:clamp(24px,4vw,34px);font-weight:850;letter-spacing:-.03em;margin-top:10px}.kpi-unit{font-size:13px;color:var(--muted);margin-left:4px}.delta{font-size:13px;margin-top:8px}.delta.good{color:var(--green)}.delta.bad{color:var(--red)}
+.spark{height:34px;margin-top:12px;display:flex;align-items:end;gap:4px}.spark i{flex:1;background:linear-gradient(180deg,#4fbf93,#bce9d5);border-radius:4px 4px 2px 2px;animation:growBar .7s ease both}@keyframes growBar{from{height:0!important}}.two-col{grid-template-columns:1.1fr .9fr}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}.card h3{margin:0 0 12px;font-size:20px}.card-sub{color:var(--muted);font-size:13px;margin-bottom:12px}
+.chart-bars{display:flex;align-items:end;gap:12px;height:220px;padding-top:12px}.bar-col{flex:1;text-align:center}.bar-rail{height:170px;display:flex;align-items:end;justify-content:center;border-bottom:1px solid var(--line)}.bar{width:58%;max-width:58px;background:linear-gradient(180deg,#9bcdb9,#6aa58f);border-radius:10px 10px 4px 4px;animation:growBar .8s ease both}.bar-label{font-size:12px;color:var(--muted);margin-top:8px}
+.donut-wrap{display:grid;grid-template-columns:190px 1fr;gap:20px;align-items:center}.donut{width:180px;height:180px;border-radius:50%;background:conic-gradient(var(--green) 0 14.4%,var(--blue) 14.4% 95.8%,var(--amber) 95.8% 100%);position:relative;margin:auto}.donut:after{content:"245.97\A tCO₂e";white-space:pre;position:absolute;inset:34px;background:#fff;border-radius:50%;display:grid;place-items:center;text-align:center;font-weight:800;font-size:20px;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}.legend{display:grid;gap:12px}.legend-row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:9px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:7px}
+.notice{background:#fff7e8;border:1px solid #f0d7aa;color:#7a4b00;border-radius:14px;padding:13px 14px;margin-bottom:14px}.table-wrap,.code-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:15px;background:#fff;position:relative;scrollbar-color:#b9c7bd #edf2ee;scrollbar-width:thin}.scroll-shell{position:relative;margin-bottom:38px}.scroll-hint{position:absolute;right:8px;bottom:-31px;z-index:4;background:rgba(255,255,255,.97);padding:5px 9px;border:1px solid var(--line);border-radius:9px;font-size:11px;color:var(--muted);box-shadow:0 4px 12px rgba(31,69,54,.05);white-space:nowrap}table{border-collapse:collapse;min-width:920px;width:100%}th,td{padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:left;font-size:13px}th{background:#f2f7f3;position:sticky;top:0;z-index:1}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.search{flex:1;min-width:200px}.search input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fff}.btn{border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 13px;transition:.2s}.btn:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(20,35,27,.07)}.btn.primary{background:var(--green);color:#fff;border-color:var(--green)}.badge{display:inline-block;padding:5px 8px;border-radius:999px;background:var(--mint);font-size:12px;color:var(--green);font-weight:700}.badge.scope1{background:#fff0e8;color:#a4491f}.badge.scope2{background:#eaf3ff;color:#2f6ebd}.badge.scope3{background:#fff4dd;color:#a56e11}
+.metric-list{display:grid;gap:12px}.metric-row{display:grid;grid-template-columns:160px 1fr 90px;gap:10px;align-items:center}.metric-track{height:12px;background:#edf2ee;border-radius:999px;overflow:hidden}.metric-track i{display:block;height:100%;background:linear-gradient(90deg,#78b29b,#acd6c4);border-radius:999px;animation:widthIn .7s ease both}@keyframes widthIn{from{width:0!important}}
+.flow{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.flow::-webkit-scrollbar{display:none}.flow-step{min-width:170px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px;transition:.2s}.flow-step:hover{transform:translateY(-2px);border-color:#b8d8c7}.flow-step b{display:block;margin-top:6px}.flow-step small{color:var(--muted)}
+.report-preview{white-space:pre;min-width:760px;padding:16px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.7}.file-input{border:1px dashed #b8c8be;border-radius:14px;padding:16px;background:#fbfdfb}
+.mobile-bottom{display:none;position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border-top:1px solid var(--line);z-index:40;padding:7px 10px calc(7px + env(safe-area-inset-bottom))}.mobile-bottom .inner{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(78px,1fr);gap:4px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}.mobile-bottom .inner::-webkit-scrollbar{display:none}.mobile-bottom button{border:0;background:transparent;border-radius:11px;padding:7px 4px;font-size:10px;color:var(--muted);white-space:nowrap;min-height:52px;scroll-snap-align:center}.mobile-bottom button.active{color:#315f4f;background:#eaf4ef;font-weight:700;box-shadow:inset 0 0 0 1px #cfe2da}
+.toast{position:fixed;right:18px;bottom:24px;background:#143d2f;color:#fff;border-radius:12px;padding:11px 14px;opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s;z-index:80}.toast.show{opacity:1;transform:none}
+@media(max-width:960px){.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.two-col{grid-template-columns:1fr}.status-strip{grid-template-columns:1fr}.donut-wrap{grid-template-columns:1fr}}
+@media(max-width:720px){.hero{padding:14px 16px 12px}.brand-mark{width:46px;height:46px;border-radius:14px}.brand-title{font-size:22px;line-height:1.12}.version{display:none}.nav-wrap{padding:0 16px 12px}main{padding:18px 14px 108px}.status-strip{padding:17px;border-radius:18px}.period-box{align-items:stretch;flex-direction:column}.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi-card{padding:16px;min-height:146px}.kpi-value{font-size:24px}.section-head{align-items:flex-start;flex-direction:column;margin-top:30px}.metric-row{grid-template-columns:1fr}.metric-row strong{text-align:left!important}.mobile-bottom{display:block}.nav{display:none}.chart-bars{height:190px}.bar-rail{height:145px}}
+@media(max-width:430px){.kpi-grid{grid-template-columns:1fr}.toolbar{align-items:stretch}.toolbar .search{min-width:0;width:100%}.toolbar>.btn{width:100%}.brand-title{font-size:20px}.card,.kpi-card{border-radius:16px}.section-head h2{font-size:27px}.brand-sub{font-size:12px}}
+
+.quality-gate{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.gate-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.gate-item b{display:block;margin-bottom:5px}.gate-pass{color:#477d70}.gate-warn{color:#a27839}.action-list{display:grid;gap:10px}.action-row{display:grid;grid-template-columns:1.5fr .7fr .7fr .8fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}.action-row input,.action-row select{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px;background:#fff}.scenario-presets{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.scenario-presets button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px}.scenario-presets button:hover{background:var(--mint)}@media(max-width:720px){.quality-gate{grid-template-columns:1fr 1fr}.action-row{grid-template-columns:1fr 1fr}.action-row .wide{grid-column:1/-1}}@media(max-width:430px){.quality-gate{grid-template-columns:1fr}.action-row{grid-template-columns:1fr}}
+
+button{touch-action:manipulation}
+.btn,.action-btn,.mobile-bottom button,.nav button,.icon-btn{transition:transform .12s ease,background .16s ease,box-shadow .16s ease}
+.btn:active,.action-btn:active,.mobile-bottom button:active,.nav button:active,.icon-btn:active{transform:scale(.96)}
+.mobile-bottom{box-shadow:0 -8px 24px rgba(24,49,39,.08)}
+.mobile-bottom button span{display:block;margin-bottom:2px}
+@media(max-width:720px){body{padding-bottom:74px}.mobile-bottom{display:block!important}}
+
+
+.icon-btn,.icon-btn:hover,.icon-btn:focus,.icon-btn:active{
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  border-radius:0!important;padding:4px!important;min-width:28px;min-height:28px;
+}
+.icon-btn:hover{opacity:.72}
+.case-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.case-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.case-card p{color:var(--muted);font-size:13px}
+.case-meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.case-meta span{font-size:11px;padding:4px 7px;border-radius:999px;background:var(--mint);color:var(--green)}
+.case-result{margin-top:12px;padding:12px;border-radius:12px;background:#f8faf9;border:1px solid var(--line)}
+.case-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.case-log{margin-top:12px;max-height:240px;overflow:auto;background:#fbfcfb;border:1px solid var(--line);border-radius:12px;padding:12px;font-family:ui-monospace,monospace;font-size:12px;white-space:pre-wrap}
+.stepper{display:grid;grid-template-columns:repeat(5,minmax(145px,1fr));gap:10px;overflow-x:auto}
+.step-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}
+.step-card.done{background:#f3f8f5;border-color:#b8d7ca}.step-card.active{outline:2px solid #b9d5ca}
+@media(max-width:960px){.case-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.case-grid{grid-template-columns:1fr}.case-actions .btn{flex:1}}
+
+.flow-shell{position:relative;max-width:100%;margin-bottom:42px}
+.flow{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;padding:2px 2px 10px;scrollbar-width:thin;scrollbar-color:#c8d7d0 #eef3f0}
+.flow::-webkit-scrollbar{height:6px}.flow::-webkit-scrollbar-thumb{background:#c8d7d0;border-radius:999px}
+.flow-step{scroll-snap-align:start;flex:0 0 170px}
+.flow-hint{position:absolute;right:6px;bottom:-31px;z-index:5;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:11px;color:var(--muted);box-shadow:0 4px 12px rgba(31,69,54,.06);cursor:pointer;user-select:none;white-space:nowrap}
+.flow-hint:active{transform:scale(.97)}
+@media(max-width:720px){.flow-step{flex-basis:158px}.flow-hint{right:2px}}
+
+
+#caseLog{min-height:150px;max-height:220px;contain:content;will-change:scroll-position}
+#caseStepper{contain:layout paint}
+.step-card{transition:border-color .12s ease,background .12s ease,outline-color .12s ease}
+.case-flow-status{display:flex;align-items:center;gap:8px;margin-top:10px;color:var(--muted);font-size:12px}
+.case-dot{width:8px;height:8px;border-radius:50%;background:#b9c7c0}.case-dot.running{background:#6fa695;animation:pulseDot 1s infinite}
+@keyframes pulseDot{50%{opacity:.35}}
+
+
+.anomaly-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.anomaly-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px}
+.anomaly-card .sev{font-size:11px;padding:4px 7px;border-radius:999px;display:inline-block}
+.sev.high{background:#fff0ed;color:#a54b42}.sev.medium{background:#fff7e6;color:#9a6c20}.sev.low{background:#edf6f1;color:#4f7b6b}
+.compare-table{display:grid;grid-template-columns:1.2fr repeat(4,minmax(120px,1fr));min-width:720px}
+.compare-table>div{padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap}.compare-head{background:#f2f7f3;font-weight:700}
+@media(max-width:960px){.anomaly-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.anomaly-grid{grid-template-columns:1fr}}
+
+
+.case-modebar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.mode-switch{display:inline-flex;border:1px solid var(--line);border-radius:12px;padding:3px;background:#f7faf8}
+.mode-switch button{border:0;background:transparent;padding:8px 12px;border-radius:9px;color:var(--muted)}
+.mode-switch button.active{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(31,69,54,.08);font-weight:700}
+.speed-select{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px}
+.case-progress{height:9px;background:#edf2ef;border-radius:999px;overflow:hidden;margin-top:10px}
+.case-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7ea99b,#b9d5ca);transition:width .35s ease;border-radius:999px}
+.autorun-note{font-size:12px;color:var(--muted);margin-top:7px}
+
+
+.version-list{display:grid;gap:10px}
+.version-row{display:grid;grid-template-columns:1fr .8fr .7fr .8fr auto;gap:10px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fff}
+.version-row small{color:var(--muted)}
+.roi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.roi-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px}
+.roi-card b{display:block;font-size:22px;margin-top:8px}
+.roi-table{min-width:780px}
+@media(max-width:960px){.roi-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.version-row{grid-template-columns:1fr 1fr}.version-row .wide{grid-column:1/-1}.roi-grid{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<header class="topbar"><div class="hero"><div class="brand-mark">◒</div><div class="brand-text"><div class="brand-title">ESG Carbon &amp; Energy Intelligence Platform</div><div class="brand-sub">Data → Insight → Action → A Greener Tomorrow</div></div><div class="version"><b>v0.7.0</b><br>Demo Sandbox</div></div><div class="nav-wrap"><nav class="nav" id="topNav"></nav></div></header>
+<main>
+<section class="status-strip"><div><div class="status-title">今天也用數據推動永續行動</div><div class="status-copy">目前載入 9 筆活動數據、3 組示範排放係數；可直接進行盤查、能源分析與情境模擬。</div></div><div class="period-box"><div><small>資料期間</small><br><b>2026-01 ～ 2026-03</b></div><button class="action-btn" onclick="recalcAll()">↻ 重新計算</button></div></section>
+
+<section id="dashboard" class="page active"><div class="card" style="margin-top:20px"><b>本區用途：</b>快速掌握整體排放、能源使用、減碳目標與 Scope 結構；先看異常與趨勢，再進入各功能中心追查原因。</div><div class="section-head"><div><h2>控制台</h2><p>企業級 ESG 與能源決策總覽</p></div></div><div class="grid kpi-grid" id="kpiGrid"></div><div class="grid two-col" style="margin-top:14px"><div class="card"><h3>能源智慧中心</h3><div class="card-sub">月用電趨勢與基線比較</div><div class="chart-bars" id="energyBars"></div></div><div class="card"><h3>排放結構分析</h3><div class="card-sub">Scope 1 / 2 / 3 佔比</div><div class="donut-wrap"><div class="donut"></div><div class="legend" id="scopeLegend"></div></div><div class="notice" style="margin-top:16px">💡 Scope 2 佔比最高，建議優先從用電管理與綠電策略著手。</div></div></div><div class="section-head"><div><h2>端到端流程</h2><p>從資料匯入到決策與報告</p></div></div><div class="flow-shell"><div class="flow" id="flow"></div><div class="flow-hint" id="flowHint" role="button" tabindex="0">↔ 流程可左右查看</div></div><div class="section-head"><div><h2>決策工作流</h2><p>把資料問題直接轉成可執行任務，減少在不同頁面之間來回尋找。</p></div></div>
+<div class="grid two">
+<div class="card"><h3>① 資料治理</h3><p class="muted">先檢查 Schema、缺值、單位與係數對應；異常項目可直接導向資料工作台。</p><button class="btn" onclick="showPage('data')">前往資料品質</button></div>
+<div class="card"><h3>② 排放與能源診斷</h3><p class="muted">比較 Scope 結構、能源趨勢與高排放熱點，建立優先處理順序。</p><button class="btn" onclick="showPage('analytics')">前往分析</button></div>
+<div class="card"><h3>③ 減碳情境</h3><p class="muted">將診斷結果轉成減量假設，即時比較 Baseline、Scenario、減碳量與減碳率。</p><button class="btn" onclick="showPage('scenario')">建立情境</button></div>
+<div class="card"><h3>④ 報告與行動</h3><p class="muted">依摘要、品質、盤查、能源、熱點、情境與行動順序產生整理後報告。</p><button class="btn" onclick="showPage('report')">產生報告</button></div>
+</div>
+<div class="section-head"><div><h2>真實案例演示中心</h2><p>以模擬企業情境操作「資料 → 診斷 → 情境 → 行動」流程；案例皆為示範資料。</p></div></div>
+<div class="case-grid">
+<div class="case-card"><b>案例 A｜製造廠用電異常</b><p>連續三個月用電上升，但產量增幅有限。</p><div class="case-meta"><span>Scope 2</span><span>能源異常</span></div><div id="caseAResult" class="case-result">尚未執行。</div><div class="case-actions"><button class="btn primary" onclick="runCase('A')">執行診斷</button><button class="btn" onclick="applyCase('A')">套用案例</button></div></div>
+<div class="case-card"><b>案例 B｜物流柴油排放偏高</b><p>車隊柴油活動量逐月增加，需要檢查油耗與路線效率。</p><div class="case-meta"><span>Scope 1</span><span>柴油車隊</span></div><div id="caseBResult" class="case-result">尚未執行。</div><div class="case-actions"><button class="btn primary" onclick="runCase('B')">執行診斷</button><button class="btn" onclick="applyCase('B')">套用案例</button></div></div>
+<div class="case-card"><b>案例 C｜商務差旅增加</b><p>差旅里程快速增加，需要評估遠距替代與低碳交通。</p><div class="case-meta"><span>Scope 3</span><span>差旅</span></div><div id="caseCResult" class="case-result">尚未執行。</div><div class="case-actions"><button class="btn primary" onclick="runCase('C')">執行診斷</button><button class="btn" onclick="applyCase('C')">套用案例</button></div></div>
+</div>
+<div class="section-head"><div><h2>案例流程模擬器</h2><p>逐步查看資料品質、係數、計算、熱點與行動如何串接。</p></div></div>
+<div class="card">
+<select id="caseSelector" onchange="selectCase(this.value)" style="padding:9px;border:1px solid var(--line);border-radius:10px">
+<option value="A">案例 A｜製造廠用電異常</option><option value="B">案例 B｜物流柴油排放</option><option value="C">案例 C｜商務差旅增加</option>
+</select>
+<div class="case-modebar">
+  <div class="mode-switch">
+    <button id="manualModeBtn" class="active" onclick="setCaseMode('manual')">手動</button>
+    <button id="autoModeBtn" onclick="setCaseMode('auto')">自動</button>
+  </div>
+  <label>速度：
+    <select id="caseSpeed" class="speed-select" onchange="setCaseSpeed(this.value)">
+      <option value="2600">慢速（2.6 秒／步）</option>
+      <option value="1900" selected>舒適（1.9 秒／步）</option>
+      <option value="1200">一般（1.2 秒／步）</option>
+    </select>
+  </label>
+</div>
+<button class="btn primary" onclick="runSelectedCase()">開始流程</button>
+<button class="btn" id="nextStepBtn" onclick="nextCaseStep()">下一步</button>
+<button class="btn" id="pauseAutoBtn" onclick="pauseCaseAuto()" style="display:none">暫停自動</button>
+<button class="btn" onclick="resetCaseFlow()">重設</button>
+<div class="case-progress"><i id="caseProgressBar"></i></div>
+<div class="autorun-note" id="caseAutoNote">目前為手動模式；每次按「下一步」執行一個階段。</div>
+<div id="caseStepper" class="stepper" style="margin-top:14px"></div>
+<div class="case-flow-status"><span class="case-dot" id="caseDot"></span><span id="caseStatus">等待操作</span></div><div id="caseLog" class="case-log">等待執行案例流程…</div>
+</div>
+
+<div class="section-head"><div><h2>異常中心</h2><p>將能源與排放異常轉成可追蹤事件，補上嚴重度、可能原因與建議處置。</p></div></div>
+<div class="anomaly-grid" id="anomalyGrid"></div>
+
+<div class="section-head"><div><h2>多情境比較</h2><p>一次比較 Base、保守、目標與積極減碳情境，不必逐個切換。</p></div></div>
+<div class="card">
+  <div class="table-wrap"><div class="compare-table" id="scenarioCompare"></div></div>
+</div>
+</section>
+
+<section id="data" class="page"><div class="card" style="margin-top:20px"><b>本區用途：</b>管理活動數據來源與品質。建議流程為「匯入 → 欄位確認 → 缺值／格式檢查 → 排放係數關聯 → 送入盤查」。</div><div class="section-head"><div><h2>資料工作台</h2><p>匯入、驗證、欄位對應與資料品質</p></div></div><div class="card"><div class="file-input"><input id="fileInput" type="file" accept=".csv"><div style="margin-top:12px"><button class="btn primary" onclick="loadDemo()">載入示範資料</button> <button class="btn" onclick="clearData()">清除</button></div></div><div class="grid kpi-grid" style="margin-top:14px" id="qualityCards"></div></div><div class="section-head"><div><h2>Data Quality Gate</h2><p>匯入資料先通過 Schema、缺值、單位與排放係數關聯檢查，再進入盤查流程。</p></div></div><div class="quality-gate" id="qualityGate"></div><div class="card" style="margin-top:14px"><b>流程說明：</b> Gate 未通過時，正式盤查流程應停止並先修正資料；Demo 模式仍允許檢視結果。</div><div class="section-head"><div><h2>活動數據</h2><p>逐筆檢視期間、據點、活動來源、Scope、活動量、單位與係數對應結果</p></div></div><div class="table-wrap"><table id="dataTable"></table></div></section>
+
+<section id="carbon" class="page"><div class="card" style="margin-top:20px"><b>本區用途：</b>檢查每筆活動數據如何套用排放係數並轉換成 CO₂e，讓計算結果可追溯、可核對。</div><div class="section-head"><div><h2>碳盤查中心</h2><p>活動數據 × 排放係數 → CO₂e</p></div></div><div class="card"><span class="badge">✓ 可追溯計算</span><p style="margin-bottom:0">每筆結果保留 Scope、活動量、單位、排放係數與 tCO₂e。</p></div><div class="table-wrap" style="margin-top:14px"><table id="carbonTable"></table></div></section>
+
+<section id="energy" class="page"><div class="card" style="margin-top:20px"><b>本區用途：</b>觀察月用電、最高用電月份與基線變化，協助辨識節能優先區與後續 EnPI／能源基線分析。</div><div class="section-head"><div><h2>能源智慧</h2><p>基線、趨勢與用電強度</p></div></div><div class="grid kpi-grid" id="energyKpis"></div><div class="card" style="margin-top:14px"><h3>月用電趨勢</h3><div class="metric-list" id="energyMetrics"></div></div></section>
+
+<section id="analytics" class="page"><div class="card" style="margin-top:20px"><b>本區用途：</b>將盤查結果轉成可決策資訊，包含高排放熱點、異常、相關性與後續時間序列分析。</div><div class="section-head"><div><h2>ESG Analytics</h2><p>熱點、風險與決策分析</p></div></div><div class="grid two-col"><div class="card"><h3>高排放熱點</h3><div id="hotspots"></div></div><div class="card"><h3>分析能力</h3><div class="metric-list"><div class="metric-row"><span>相關性分析</span><div class="metric-track"><i style="width:74%"></i></div><strong>Ready</strong></div><div class="metric-row"><span>異常偵測</span><div class="metric-track"><i style="width:82%"></i></div><strong>Ready</strong></div><div class="metric-row"><span>時間序列</span><div class="metric-track"><i style="width:58%"></i></div><strong>Next</strong></div></div></div></div></section>
+
+<section id="scenario" class="page"><div class="card" style="margin-top:20px"><b>本區用途：</b>調整減量假設並即時比較 Baseline 與 Scenario，評估減碳量與減碳率，不影響原始盤查資料。</div><div class="section-head"><div><h2>減碳情境模擬</h2><p>即時比較 Baseline 與 Scenario</p></div></div><div class="card" style="margin-bottom:14px"><b>快速情境：</b><div class="scenario-presets"><button onclick="setScenario(5)">保守節電 5%</button><button onclick="setScenario(10)">標準節電 10%</button><button onclick="setScenario(20)">積極節電 20%</button><button onclick="setScenario(30)">高強度減量 30%</button></div><div class="muted">先套用快速情境，再用滑桿微調；設定會儲存在本機瀏覽器。</div></div><div class="card"><label><b>Scope 2 用電減量</b> <span id="reduceLabel">10%</span></label><input id="reduceRange" type="range" min="0" max="50" value="10" style="width:100%;margin:16px 0" oninput="renderScenario();saveLocal()"><div class="grid kpi-grid" id="scenarioCards"></div></div><div class="section-head"><div><h2>Action Planner</h2><p>把情境結果轉成可執行措施，補上責任單位、影響程度與進度。</p></div></div><div class="card"><div class="action-list" id="actionList"></div><div style="margin-top:12px"><button class="btn" onclick="addAction()">＋ 新增行動</button> <button class="btn primary" onclick="saveActions()">儲存行動計畫</button></div></div>
+<div class="section-head"><div><h2>減碳效益與 ROI</h2><p>將減碳率轉成行動效益估算，協助排序不同措施的優先級。</p></div></div>
+<div class="grid roi-grid" id="roiCards"></div>
+<div class="card" style="margin-top:14px">
+  <div class="table-wrap"><table id="roiTable" class="roi-table"></table></div>
+</div>
+</section>
+
+<section id="factors" class="page"><div class="card" style="margin-top:20px"><b>本區用途：</b>集中治理排放係數的來源、年度、單位與 Scope。正式盤查前必須換入適用年度的正式係數。</div><div class="section-head"><div><h2>排放係數 Registry</h2><p>係數版本管理、來源追溯、年度適用性與 Scope 分類</p></div></div><div class="grid kpi-grid" style="margin-bottom:14px"><div class="kpi-card"><div class="kpi-label">係數版本</div><div class="kpi-value">2026<span class="kpi-unit">Demo</span></div><div class="delta good">版本可追蹤</div></div><div class="kpi-card"><div class="kpi-label">治理狀態</div><div class="kpi-value">3<span class="kpi-unit">筆</span></div><div class="delta good">來源已標示</div></div><div class="kpi-card"><div class="kpi-label">待正式化</div><div class="kpi-value">3<span class="kpi-unit">筆</span></div><div class="delta bad">需換正式係數</div></div><div class="kpi-card"><div class="kpi-label">本機變更</div><div class="kpi-value" id="factorChangeCount">0<span class="kpi-unit">次</span></div><div class="delta good">localStorage</div></div></div><div class="notice">⚠ 所有內建係數皆為 DEMO，正式使用必須換成適用年度與來源的正式係數。</div><div class="toolbar"><div class="search"><input id="factorSearch" placeholder="搜尋係數（名稱、單位、ID）" oninput="renderFactors()"></div><button class="btn" onclick="addFactor()">＋ 新增係數</button></div><div class="table-wrap"><table id="factorTable"></table></div>
+<div class="section-head"><div><h2>係數版本歷程</h2><p>保留變更前後數值、版本、生效狀態與時間，支援回滾 Demo。</p></div></div>
+<div class="card">
+  <div class="version-list" id="factorHistory"></div>
+</div>
+</section>
+
+<section id="report" class="page"><div class="card" style="margin-top:20px"><b>本區用途：</b>將已整理的結果依「摘要 → 品質 → 盤查 → 能源 → 熱點 → 情境 → 行動」輸出，避免只堆疊原始數據。</div><div class="section-head"><div><h2>報告中心</h2><p>依管理順序產生已整理報告</p></div></div><div class="card"><div class="toolbar"><button class="btn primary" onclick="downloadReport()">下載 Markdown 報告</button><button class="btn" onclick="copyReport()">複製報告</button></div><div class="code-wrap"><pre id="reportPreview" class="report-preview"></pre></div></div></section>
+</main>
+<div class="mobile-bottom"><div class="inner" id="bottomNav">
+<button class="active" onclick="showPage('dashboard')"><span style="font-size:18px">⌂</span>控制台</button>
+<button onclick="showPage('data')"><span style="font-size:18px">▣</span>資料工作台</button>
+<button onclick="showPage('carbon')"><span style="font-size:18px">◒</span>碳盤查</button>
+<button onclick="showPage('energy')"><span style="font-size:18px">ϟ</span>能源智慧</button>
+<button onclick="showPage('analytics')"><span style="font-size:18px">⌁</span>ESG Analytics</button>
+<button onclick="showPage('scenario')"><span style="font-size:18px">◎</span>情境模擬</button>
+<button onclick="showPage('factors')"><span style="font-size:18px">◌</span>排放係數</button>
+<button onclick="showPage('report')"><span style="font-size:18px">▤</span>報告</button>
+</div></div><div class="toast" id="toast"></div>
+
+<script>
+
+var caseRunMode="manual";
+var caseRunDelay=1900;
+var caseAutoTimer=null;
+var caseAutoPaused=false;
+
+function setCaseMode(mode){
+  caseRunMode=mode;
+  document.getElementById("manualModeBtn").classList.toggle("active",mode==="manual");
+  document.getElementById("autoModeBtn").classList.toggle("active",mode==="auto");
+  document.getElementById("nextStepBtn").style.display=mode==="manual"?"inline-block":"none";
+  document.getElementById("pauseAutoBtn").style.display=mode==="auto"?"inline-block":"none";
+  document.getElementById("caseAutoNote").textContent=
+    mode==="manual"?"目前為手動模式；每次按「下一步」執行一個階段。":
+    "目前為自動模式；系統會以較慢節奏逐步執行，每步約 "+(caseRunDelay/1000).toFixed(1)+" 秒。";
+  if(mode==="manual")pauseCaseAuto();
+}
+function setCaseSpeed(v){
+  caseRunDelay=parseInt(v,10)||1900;
+  if(caseRunMode==="auto"){
+    document.getElementById("caseAutoNote").textContent="目前為自動模式；每步約 "+(caseRunDelay/1000).toFixed(1)+" 秒。";
+  }
+}
+function updateCaseProgress(){
+  var bar=document.getElementById("caseProgressBar");
+  if(bar)bar.style.width=Math.round((caseFlow.step/caseFlow.steps.length)*100)+"%";
+}
+function pauseCaseAuto(){if(caseAutoPaused){resumeCaseAuto();return}
+  caseAutoPaused=true;
+  if(caseAutoTimer){clearTimeout(caseAutoTimer);caseAutoTimer=null}
+  var b=document.getElementById("pauseAutoBtn");if(b)b.textContent="繼續自動";
+  setCaseBusy(false,"自動流程已暫停");
+}
+function resumeCaseAuto(){
+  caseAutoPaused=false;
+  var b=document.getElementById("pauseAutoBtn");if(b)b.textContent="暫停自動";
+  scheduleNextCaseStep();
+}
+function scheduleNextCaseStep(){
+  if(caseRunMode!=="auto"||caseAutoPaused)return;
+  if(caseFlow.step>=caseFlow.steps.length){setCaseBusy(false,"流程完成");return}
+  caseAutoTimer=setTimeout(function(){
+    caseAutoTimer=null;
+    performCaseStep();
+    if(caseFlow.step<caseFlow.steps.length)scheduleNextCaseStep();
+  },caseRunDelay);
+}
+
+function setupFlowHint(){
+ var flow=document.getElementById("flow"),hint=document.getElementById("flowHint");
+ if(!flow||!hint)return;
+ var nudge=function(){
+   var max=flow.scrollWidth-flow.clientWidth;
+   if(max<=0){showToast("目前流程已完整顯示");return}
+   var next=flow.scrollLeft+Math.max(220,flow.clientWidth*.72);
+   if(next>=max-4)next=0;
+   try{flow.scrollTo({left:next,behavior:"smooth"})}catch(e){flow.scrollLeft=next}
+ };
+ hint.onclick=nudge;
+ hint.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();nudge()}};
+}
+
+function updateCaseStepperFast(){
+ var host=document.getElementById("caseStepper"); if(!host)return;
+ var cards=host.children;
+ if(cards.length!==caseFlow.steps.length){
+   var frag=document.createDocumentFragment();
+   caseFlow.steps.forEach(function(s,i){
+     var d=document.createElement("div");d.className="step-card";d.innerHTML="<small>0"+(i+1)+"</small><b>"+s+"</b>";frag.appendChild(d);
+   });
+   host.textContent="";host.appendChild(frag);cards=host.children;
+ }
+ for(var i=0;i<cards.length;i++){
+   cards[i].className="step-card "+(i<caseFlow.step?"done":i===caseFlow.step?"active":"");
+ }
+}
+function appendCaseLog(msg,reset){
+ var log=document.getElementById("caseLog");if(!log)return;
+ if(reset){log.textContent=msg||"等待執行案例流程…";return}
+ var block=document.createElement("div");
+ block.textContent=msg;
+ if(log.textContent==="等待執行案例流程…")log.textContent="";
+ if(log.childNodes.length)log.appendChild(document.createElement("br"));
+ log.appendChild(block);
+ requestAnimationFrame(function(){log.scrollTop=log.scrollHeight});
+}
+function setCaseBusy(busy,text){
+ var dot=document.getElementById("caseDot"),status=document.getElementById("caseStatus");
+ if(dot)dot.className="case-dot"+(busy?" running":"");
+ if(status)status.textContent=text|| (busy?"執行中":"等待操作");
+}
+function renderAnomalies(){
+ var host=document.getElementById("anomalyGrid");if(!host)return;
+ var items=[
+  ["高","Scope 2 用電上升","三個月用電呈上升趨勢，建議比對產量與設備負載。","先檢查尖峰負載與高耗能設備","high"],
+  ["中","柴油活動量偏高","Scope 1 柴油使用量增加，可能與車趟、怠速或路線效率有關。","建立 L/100km 與怠速 KPI","medium"],
+  ["低","Scope 3 差旅增加","差旅里程成長，建議細分交通工具後再設定減量目標。","導入遠距替代率與碳預算","low"]
+ ];
+ host.innerHTML=items.map(function(x){return '<div class="anomaly-card"><span class="sev '+x[4]+'">'+x[0]+'嚴重度</span><h3>'+x[1]+'</h3><p class="muted">'+x[2]+'</p><b>建議：</b>'+x[3]+'</div>'}).join("");
+}
+function renderScenarioCompare(){
+ var host=document.getElementById("scenarioCompare");if(!host)return;
+ var s=scopeTotals(),base=totals(),scope2=s["Scope 2"];
+ var cases=[["Base",0],["保守",5],["目標",15],["積極",30]];
+ var cols=['<div class="compare-head">指標</div>'].concat(cases.map(function(c){return '<div class="compare-head">'+c[0]+'</div>'}));
+ var rowsHtml=cols.join("");
+ function row(label,fn){rowsHtml+='<div><b>'+label+'</b></div>'+cases.map(function(c){return '<div>'+fn(c[1])+'</div>'}).join("")}
+ row("總排放",function(p){return (base-scope2*p/100).toFixed(2)+" tCO₂e"});
+ row("減碳量",function(p){return (scope2*p/100).toFixed(2)+" tCO₂e"});
+ row("減碳率",function(p){return ((scope2*p/100)/base*100).toFixed(1)+"%"});
+ row("建議用途",function(p){return p===0?"基準":p<=5?"低風險":p<=15?"年度目標":"Stretch"});
+ host.innerHTML=rowsHtml;
+}
+
+
+var caseLibrary={
+A:{name:"製造廠用電異常",rows:[["2026-04","桃園製造一廠","electricity","Scope 2","electricity_kwh",165000,"kWh","EF-TW-ELEC-DEMO"],["2026-05","桃園製造一廠","electricity","Scope 2","electricity_kwh",188000,"kWh","EF-TW-ELEC-DEMO"],["2026-06","桃園製造一廠","electricity","Scope 2","electricity_kwh",214000,"kWh","EF-TW-ELEC-DEMO"]],diagnosis:"6 月用電較 4 月增加約 29.7%，應優先檢查空調、空壓與高耗能製程。",action:"建議建立 10%～20% 節電情境。"},
+B:{name:"物流柴油排放偏高",rows:[["2026-04","北區物流中心","diesel","Scope 1","diesel_liter",6800,"L","EF-DIESEL-DEMO"],["2026-05","北區物流中心","diesel","Scope 1","diesel_liter",7350,"L","EF-DIESEL-DEMO"],["2026-06","北區物流中心","diesel","Scope 1","diesel_liter",7900,"L","EF-DIESEL-DEMO"]],diagnosis:"柴油使用逐月上升，應搭配里程、載重、怠速與 L/100km 指標判讀。",action:"建議比較路線最佳化與車隊電動化情境。"},
+C:{name:"商務差旅增加",rows:[["2026-04","總公司","business_travel","Scope 3","travel_km",42000,"km","EF-TRAVEL-DEMO"],["2026-05","總公司","business_travel","Scope 3","travel_km",51000,"km","EF-TRAVEL-DEMO"],["2026-06","總公司","business_travel","Scope 3","travel_km",59000,"km","EF-TRAVEL-DEMO"]],diagnosis:"差旅里程持續增加，應再拆分航空、高鐵與汽車等交通方式。",action:"建議建立遠距替代率與部門差旅碳預算。"}};
+var caseFlow={id:"A",step:0,steps:["資料檢查","係數關聯","碳排計算","熱點診斷","情境與行動"]};
+function runCase(id){var c=caseLibrary[id],t=0;c.rows.forEach(function(r){var f=factors[r[7]];if(f)t+=Number(r[5])*f.factor/1000});document.getElementById("case"+id+"Result").innerHTML="<b>診斷：</b>"+c.diagnosis+"<br><b>估算排放：</b>"+t.toFixed(2)+" tCO₂e<br><b>建議：</b>"+c.action;showToast("案例 "+id+" 已完成")}
+function applyCase(id){rows=caseLibrary[id].rows.slice();recalcAll();showToast("已套用 "+caseLibrary[id].name);showPage("dashboard")}
+function selectCase(id){caseFlow.id=id;resetCaseFlow()}
+function renderCaseFlow(){updateCaseStepperFast()}
+function resetCaseFlow(){
+  if(caseAutoTimer){clearTimeout(caseAutoTimer);caseAutoTimer=null}
+  caseAutoPaused=false;caseFlow.step=0;updateCaseStepperFast();updateCaseProgress();
+  appendCaseLog("等待執行案例流程…",true);setCaseBusy(false,"等待操作");
+  var b=document.getElementById("pauseAutoBtn");if(b)b.textContent="暫停自動";
+}
+function runSelectedCase(){
+  if(caseAutoTimer){clearTimeout(caseAutoTimer);caseAutoTimer=null}
+  caseAutoPaused=false;caseFlow.step=0;updateCaseStepperFast();updateCaseProgress();
+  appendCaseLog("流程已啟動。",true);
+  if(caseRunMode==="auto"){
+    document.getElementById("pauseAutoBtn").textContent="暫停自動";
+    setCaseBusy(false,"準備自動執行");
+    scheduleNextCaseStep();
+  }else{
+    setCaseBusy(false,"等待下一步");
+  }
+}
+function performCaseStep(){
+  var c=caseLibrary[caseFlow.id],msg=[
+   "資料檢查：確認期間、據點、來源、Scope、活動量與單位。",
+   "係數關聯：依 factor_id 配對係數，未知係數會被品質 Gate 標記。",
+   "碳排計算：活動量 × 排放係數 → tCO₂e。",
+   "熱點診斷："+c.diagnosis,
+   "情境與行動："+c.action
+  ];
+  if(caseFlow.step>=msg.length){showToast("案例流程已完成");setCaseBusy(false,"流程完成");return false}
+  setCaseBusy(true,"處理 "+caseFlow.steps[caseFlow.step]);
+  appendCaseLog(msg[caseFlow.step],false);
+  caseFlow.step++;
+  updateCaseStepperFast();
+  updateCaseProgress();
+  setCaseBusy(false,caseFlow.step>=msg.length?"流程完成":(caseRunMode==="auto"?"等待下一個自動步驟":"等待下一步"));
+  return true;
+}
+function nextCaseStep(){
+  if(caseRunMode==="auto"){
+    if(caseAutoPaused){resumeCaseAuto()}else{pauseCaseAuto()}
+    return;
+  }
+  performCaseStep();
+}
+
+window.addEventListener("error",function(e){
+ var t=document.getElementById("toast");
+ if(t){t.textContent="系統執行發生錯誤，請重新載入此版本";t.classList.add("show")}
+});
+
+var demoRows=[["2026-01","台北營運中心","electricity","Scope 2","electricity_kwh",128000,"kWh","EF-TW-ELEC-DEMO"],["2026-02","台北營運中心","electricity","Scope 2","electricity_kwh",134500,"kWh","EF-TW-ELEC-DEMO"],["2026-03","台北營運中心","electricity","Scope 2","electricity_kwh",142000,"kWh","EF-TW-ELEC-DEMO"],["2026-01","新竹資料中心","diesel","Scope 1","diesel_liter",4200,"L","EF-DIESEL-DEMO"],["2026-02","新竹資料中心","diesel","Scope 1","diesel_liter",3900,"L","EF-DIESEL-DEMO"],["2026-03","新竹資料中心","diesel","Scope 1","diesel_liter",5100,"L","EF-DIESEL-DEMO"],["2026-01","台北營運中心","business_travel","Scope 3","travel_km",28500,"km","EF-TRAVEL-DEMO"],["2026-02","台北營運中心","business_travel","Scope 3","travel_km",31200,"km","EF-TRAVEL-DEMO"],["2026-03","台北營運中心","business_travel","Scope 3","travel_km",26700,"km","EF-TRAVEL-DEMO"]];
+var rows=demoRows.slice();
+var factors={"EF-TW-ELEC-DEMO":{name:"示範電力",unit:"kgCO2e/kWh",factor:0.495,source:"DEMO",year:"2026",scope:"Scope 2"},"EF-DIESEL-DEMO":{name:"示範柴油",unit:"kgCO2e/L",factor:2.68,source:"DEMO",year:"2026",scope:"Scope 1"},"EF-TRAVEL-DEMO":{name:"示範商務移動",unit:"kgCO2e/km",factor:0.12,source:"DEMO",year:"2026",scope:"Scope 3"}};
+var pages=[["dashboard","控制台","⌂"],["data","資料工作台","▣"],["carbon","碳盤查","◒"],["energy","能源智慧","ϟ"],["analytics","ESG Analytics","⌁"],["scenario","情境模擬","◎"],["factors","排放係數","◌"],["report","報告","▤"]];
+
+function installScrollHints(){
+ var nodes=document.querySelectorAll(".table-wrap,.code-wrap");
+ Array.prototype.forEach.call(nodes,function(el){
+   if(el.parentNode&&el.parentNode.classList&&el.parentNode.classList.contains("scroll-shell"))return;
+   var shell=document.createElement("div");shell.className="scroll-shell";
+   el.parentNode.insertBefore(shell,el);shell.appendChild(el);
+   var hint=document.createElement("div");hint.className="scroll-hint";hint.textContent="↔ 可左右滑動";hint.setAttribute("role","button");hint.setAttribute("tabindex","0");
+   var nudge=function(){var max=el.scrollWidth-el.clientWidth;if(max<=0){showToast("此區目前不需要左右滑動");return}var target=el.scrollLeft+Math.max(180,el.clientWidth*.65);if(target>=max-5)target=0;try{el.scrollTo({left:target,behavior:"smooth"})}catch(e){el.scrollLeft=target}};
+   hint.onclick=nudge;hint.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();nudge()}};
+   shell.appendChild(hint);
+ });
+}
+
+
+var factorChangeCount=0;
+
+var factorHistory=[
+ {id:"EF-TW-ELEC-DEMO",version:"2026-demo",value:0.495,status:"目前版本",time:"2026-09-12"},
+ {id:"EF-DIESEL-DEMO",version:"2026-demo",value:2.680,status:"目前版本",time:"2026-09-12"},
+ {id:"EF-TRAVEL-DEMO",version:"2026-demo",value:0.120,status:"目前版本",time:"2026-09-12"}
+];
+function recordFactorHistory(id,oldValue,newValue){
+  factorHistory.unshift({id:id,version:"local-"+Date.now(),value:newValue,previous:oldValue,status:"本機修改",time:new Date().toLocaleString("zh-TW")});
+  renderFactorHistory();
+}
+function renderFactorHistory(){
+ var h=document.getElementById("factorHistory");if(!h)return;
+ h.innerHTML=factorHistory.slice(0,8).map(function(x,i){
+   return '<div class="version-row"><div class="wide"><b>'+x.id+'</b><br><small>'+x.version+'</small></div>'+
+   '<div>係數：<b>'+Number(x.value).toFixed(3)+'</b></div>'+
+   '<div>'+x.status+'</div><div><small>'+x.time+'</small></div>'+
+   '<button class="btn" onclick="rollbackFactor('+i+')">回滾</button></div>';
+ }).join("");
+}
+function rollbackFactor(i){
+ var x=factorHistory[i],f=factors[x.id];if(!x||!f)return;
+ var old=f.factor;f.factor=x.value;factorChangeCount++;
+ factorHistory.unshift({id:x.id,version:"rollback-"+Date.now(),value:x.value,previous:old,status:"回滾",time:new Date().toLocaleString("zh-TW")});
+ recalcAll();renderFactorHistory();showToast("已回滾 "+x.id);
+}
+
+var actions=[{name:"提升高耗能設備效率",owner:"設備",impact:"高",status:"規劃中"},{name:"評估綠電／再生能源採購",owner:"能源",impact:"高",status:"待評估"}];
+function saveLocal(){try{localStorage.setItem("esg_v040_rows",JSON.stringify(rows));localStorage.setItem("esg_v040_factors",JSON.stringify(factors));localStorage.setItem("esg_v040_actions",JSON.stringify(actions));localStorage.setItem("esg_v040_reduce",String(document.getElementById("reduceRange").value));localStorage.setItem("esg_v040_factorChanges",String(factorChangeCount))}catch(e){}}
+function loadLocal(){try{var r=localStorage.getItem("esg_v040_rows"),f=localStorage.getItem("esg_v040_factors"),a=localStorage.getItem("esg_v040_actions"),red=localStorage.getItem("esg_v040_reduce"),fc=localStorage.getItem("esg_v040_factorChanges");if(r)rows=JSON.parse(r);if(f)factors=JSON.parse(f);if(a)actions=JSON.parse(a);if(red&&document.getElementById("reduceRange"))document.getElementById("reduceRange").value=red;if(fc)factorChangeCount=parseInt(fc,10)||0}catch(e){}}
+function renderQualityGate(){var unknown=rows.filter(function(r){return !factors[r[7]]}).length;var checks=[["Schema","必要欄位完整","PASS"],["缺值","0 筆","PASS"],["係數關聯",unknown===0?"全部已對應":unknown+" 筆未知",unknown===0?"PASS":"WARN"],["單位","Demo 規則通過","PASS"]];document.getElementById("qualityGate").innerHTML=checks.map(function(x){return '<div class="gate-item"><b>'+x[0]+'</b><div>'+x[1]+'</div><div class="'+(x[2]==="PASS"?"gate-pass":"gate-warn")+'">'+x[2]+'</div></div>'}).join("")}
+function setScenario(v){document.getElementById("reduceRange").value=v;renderScenario();saveLocal();showToast("已套用 "+v+"% 情境")}
+function renderActions(){document.getElementById("actionList").innerHTML=actions.map(function(a,i){return '<div class="action-row"><input class="wide" value="'+a.name+'" onchange="actions['+i+'].name=this.value"><input value="'+a.owner+'" onchange="actions['+i+'].owner=this.value"><select onchange="actions['+i+'].impact=this.value"><option '+(a.impact==="高"?"selected":"")+'>高</option><option '+(a.impact==="中"?"selected":"")+'>中</option><option '+(a.impact==="低"?"selected":"")+'>低</option></select><select onchange="actions['+i+'].status=this.value"><option '+(a.status==="規劃中"?"selected":"")+'>規劃中</option><option '+(a.status==="待評估"?"selected":"")+'>待評估</option><option '+(a.status==="進行中"?"selected":"")+'>進行中</option><option '+(a.status==="完成"?"selected":"")+'>完成</option></select><button class="icon-btn danger" onclick="actions.splice('+i+',1);renderActions();saveLocal()">🗑</button></div>'}).join("")}
+function addAction(){actions.push({name:"新減碳行動",owner:"未指派",impact:"中",status:"規劃中"});renderActions()}
+function saveActions(){saveLocal();showToast("行動計畫已儲存於本機")}
+
+function initNav(){var top=document.getElementById("topNav");pages.forEach(function(p,i){var b=document.createElement("button");b.innerHTML="<span>"+p[2]+"</span><span>"+p[1]+"</span>";if(i===0)b.className="active";b.onclick=function(){showPage(p[0])};top.appendChild(b)})}
+function showPage(id){Array.prototype.forEach.call(document.querySelectorAll(".page"),function(x){x.classList.remove("active")});document.getElementById(id).classList.add("active");Array.prototype.forEach.call(document.querySelectorAll(".nav button,.mobile-bottom button"),function(x){x.classList.remove("active")});var idx=-1;for(var i=0;i<pages.length;i++){if(pages[i][0]===id){idx=i;break}}var t=document.querySelectorAll(".nav button");if(t[idx])t[idx].classList.add("active");var b=document.querySelectorAll(".mobile-bottom button");if(b[idx]){b[idx].classList.add("active");try{b[idx].scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"})}catch(e){}}window.scrollTo(0,0)}
+function calcRows(){return rows.map(function(r){var f=factors[r[7]],t=f?Number(r[5])*f.factor/1000:0;return r.concat([t])})}
+function scopeTotals(){var s={"Scope 1":0,"Scope 2":0,"Scope 3":0};calcRows().forEach(function(r){s[r[3]]+=r[8]});return s}
+function totals(){var s=scopeTotals();return s["Scope 1"]+s["Scope 2"]+s["Scope 3"]}
+function kpiCard(label,value,unit,delta,good,icon,bars){var spark=bars?'<div class="spark">'+bars.map(function(h){return '<i style="height:'+h+'%"></i>'}).join("")+'</div>':"";return '<div class="kpi-card"><div class="kpi-top"><div class="kpi-label">'+label+'</div><div class="kpi-ico">'+icon+'</div></div><div class="kpi-value">'+value+'<span class="kpi-unit">'+unit+'</span></div><div class="delta '+(good?"good":"bad")+'">'+delta+'</div>'+spark+'</div>'}
+function renderDashboard(){renderAnomalies();renderScenarioCompare();var s=scopeTotals(),total=totals(),elec=rows.filter(function(r){return r[2]==="electricity"}).reduce(function(a,r){return a+Number(r[5])},0);document.getElementById("kpiGrid").innerHTML=kpiCard("總排放量",total.toFixed(2),"tCO₂e","↓ 12.3% 較上期",true,"CO₂",[25,40,45,58,52,70,86])+kpiCard("總用電量",elec.toLocaleString(),"kWh","↑ 5.6% 較上期",false,"ϟ",[30,44,52,60,58,71,84])+kpiCard("能源密集度","0.608","tCO₂e/MWh","↓ 17.8% 較上期",true,"◒",[32,42,37,54,48,68,52])+kpiCard("減碳目標達成率","68","%","目標：360 tCO₂e",true,"◎",[68,68,68,68,68,68,68]);var es=rows.filter(function(r){return r[2]==="electricity"}),max=Math.max.apply(null,es.map(function(r){return Number(r[5])}));document.getElementById("energyBars").innerHTML=es.map(function(r){return '<div class="bar-col"><div class="bar-rail"><div class="bar" style="height:'+Math.round(Number(r[5])/max*100)+'%"></div></div><div class="bar-label">'+r[0]+'<br><b>'+Number(r[5]).toLocaleString()+'</b></div></div>'}).join("");var data=[["Scope 1",s["Scope 1"],"#0b7a57"],["Scope 2",s["Scope 2"],"#2f7de1"],["Scope 3",s["Scope 3"],"#e79a1c"]];document.getElementById("scopeLegend").innerHTML=data.map(function(x){return '<div class="legend-row"><span><i class="dot" style="background:'+x[2]+'"></i>'+x[0]+'</span><b>'+x[1].toFixed(2)+' ('+(x[1]/total*100).toFixed(1)+'%)</b></div>'}).join("");var fs=["資料來源","欄位 Mapping","ETL / 品質","排放係數","碳計算","能源分析","熱點偵測","情境模擬","管理報告"];document.getElementById("flow").innerHTML=fs.map(function(x,i){return '<div class="flow-step"><small>'+("0"+(i+1)).slice(-2)+'</small><b>'+x+'</b><small>'+(i<8?"已串接流程":"輸出結果")+'</small></div>'}).join("")}
+function table(el,heads,data){document.getElementById(el).innerHTML="<thead><tr>"+heads.map(function(h){return "<th>"+h+"</th>"}).join("")+"</tr></thead><tbody>"+data.map(function(r){return "<tr>"+r.map(function(v){return "<td>"+v+"</td>"}).join("")+"</tr>"}).join("")+"</tbody>"}
+function renderData(){document.getElementById("qualityCards").innerHTML=kpiCard("資料筆數",rows.length,"rows","已載入",true,"▣",[40,50,60,70,80,90,100])+kpiCard("缺值","0","筆","品質正常",true,"✓",[20,20,20,20,20,20,20])+kpiCard("未知係數",rows.filter(function(r){return !factors[r[7]]}).length,"筆","可追蹤",true,"◌",[10,10,10,10,10,10,10])+kpiCard("完整率","100","%","Schema 完整",true,"◎",[100,100,100,100,100,100,100]);table("dataTable",["期間","據點","來源","Scope","指標","活動量","單位","係數 ID"],rows)}
+function renderCarbon(){table("carbonTable",["期間","據點","來源","Scope","活動量","單位","係數 ID","tCO₂e"],calcRows().map(function(r){return [r[0],r[1],r[2],r[3],Number(r[5]).toLocaleString(),r[6],r[7],r[8].toFixed(3)]}))}
+function renderEnergy(){var es=rows.filter(function(r){return r[2]==="electricity"}),sum=es.reduce(function(a,r){return a+Number(r[5])},0),max=Math.max.apply(null,es.map(function(r){return Number(r[5])}));document.getElementById("energyKpis").innerHTML=kpiCard("總用電",sum.toLocaleString(),"kWh","3 個月",true,"ϟ",[40,50,60,65,72,84,92])+kpiCard("資料月份",es.length,"個月","2026-01 ～ 2026-03",true,"▤",[30,30,30,30,30,30,30])+kpiCard("最高月用電",max.toLocaleString(),"kWh","2026-03",false,"↑",[30,45,60,75,85,95,100])+kpiCard("月平均",Math.round(sum/es.length).toLocaleString(),"kWh","可作基線",true,"◒",[40,50,55,62,66,72,78]);document.getElementById("energyMetrics").innerHTML=es.map(function(r){var pct=Math.round(Number(r[5])/max*100);return '<div class="metric-row"><span>'+r[0]+' · '+Number(r[5]).toLocaleString()+' kWh</span><div class="metric-track"><i style="width:'+pct+'%"></i></div><strong>'+pct+'%</strong></div>'}).join("")}
+function renderAnalytics(){var c=calcRows().slice().sort(function(a,b){return b[8]-a[8]}).slice(0,5);document.getElementById("hotspots").innerHTML=c.map(function(r,i){return '<div class="card" style="box-shadow:none;margin-bottom:10px"><span class="badge">#'+(i+1)+'</span> <b>'+r[1]+'</b><div class="card-sub">'+r[0]+' · '+r[2]+' · '+r[3]+'</div><div class="kpi-value" style="font-size:23px">'+r[8].toFixed(2)+'<span class="kpi-unit">tCO₂e</span></div></div>'}).join("")}
+
+function renderROI(){
+ var s=scopeTotals(),base=totals(),pct=Number(document.getElementById("reduceRange").value)||0;
+ var annualReduction=s["Scope 2"]*pct/100;
+ var carbonValue=annualReduction*1800;
+ var projects=[
+   ["空調最佳化",280000,annualReduction*.28,62000],
+   ["空壓系統改善",420000,annualReduction*.34,88000],
+   ["綠電採購",650000,annualReduction*.52,54000],
+   ["設備更新",980000,annualReduction*.68,165000]
+ ];
+ var avgPayback=0;
+ projects.forEach(function(p){avgPayback+=p[1]/p[3]});avgPayback/=projects.length;
+ var rc=document.getElementById("roiCards");
+ if(rc)rc.innerHTML=
+   '<div class="roi-card"><small>情境年減碳</small><b>'+annualReduction.toFixed(2)+' tCO₂e</b></div>'+
+   '<div class="roi-card"><small>示範碳價效益</small><b>NT$ '+Math.round(carbonValue).toLocaleString()+'</b></div>'+
+   '<div class="roi-card"><small>平均回收期</small><b>'+avgPayback.toFixed(1)+' 年</b></div>'+
+   '<div class="roi-card"><small>優先措施</small><b>空調最佳化</b></div>';
+ var data=projects.map(function(p){return [p[0],"NT$ "+p[1].toLocaleString(),p[2].toFixed(2)+" tCO₂e/年","NT$ "+p[3].toLocaleString(),(p[1]/p[3]).toFixed(1)+" 年"]});
+ table("roiTable",["措施","CAPEX","估計年減碳","估計年節省","回收期"],data);
+}
+
+function renderScenario(){var pct=Number(document.getElementById("reduceRange").value);document.getElementById("reduceLabel").textContent=pct+"%";var s=scopeTotals(),base=totals(),after=base-s["Scope 2"]*pct/100,save=base-after;document.getElementById("scenarioCards").innerHTML=kpiCard("Baseline",base.toFixed(2),"tCO₂e","目前狀態",true,"◌",[80,80,80,80,80,80,80])+kpiCard("Scenario",after.toFixed(2),"tCO₂e","模擬後",true,"◎",[70,68,66,63,60,58,55])+kpiCard("減碳量",save.toFixed(2),"tCO₂e","可避免排放",true,"↓",[10,20,30,40,55,65,78])+kpiCard("減碳率",(save/base*100).toFixed(1),"%","Scope 2 情境",true,"◒",[15,20,30,40,45,50,60]);renderROI()}
+
+function viewFactor(id){var f=factors[id];if(!f)return;alert("排放係數明細\n\nID："+id+"\n名稱："+f.name+"\n係數："+f.factor+" "+f.unit+"\n來源："+f.source+"\n適用年度："+f.year+"\n類別："+f.scope)}
+function editFactor(id){var f=factors[id];if(!f)return;var v=prompt("編輯 "+id+" 的係數值",String(f.factor));if(v===null)return;v=parseFloat(v);if(!isFinite(v)||v<0){showToast("係數格式不正確");return}var oldValue=f.factor;f.factor=v;factorChangeCount++;recordFactorHistory(id,oldValue,v);renderFactors();recalcAll();showToast("係數已更新（本機 Demo）")}
+function deleteFactor(id){if(!factors[id])return;if(!confirm("確定刪除 "+id+"？"))return;delete factors[id];factorChangeCount++;renderFactors();recalcAll();showToast("係數已刪除")}
+function addFactor(){var id=prompt("輸入新係數 ID","EF-CUSTOM-001");if(!id)return;if(factors[id]){showToast("ID 已存在");return}var name=prompt("名稱","自訂係數")||"自訂係數";var factor=parseFloat(prompt("係數值","0.000"));if(!isFinite(factor)){showToast("係數格式不正確");return}factorChangeCount++;factors[id]={name:name,unit:"kgCO2e/unit",factor:factor,source:"USER",year:"2026",scope:"Scope 3"};renderFactors();saveLocal();showToast("已新增係數")}
+
+function renderFactors(){var cc=document.getElementById("factorChangeCount");if(cc)cc.innerHTML=factorChangeCount+'<span class="kpi-unit">次</span>';var q=(document.getElementById("factorSearch").value||"").toLowerCase(),data=[];Object.keys(factors).forEach(function(id){var f=factors[id],txt=(id+" "+f.name+" "+f.unit).toLowerCase();if(txt.indexOf(q)>=0){var cls=f.scope==="Scope 1"?"scope1":f.scope==="Scope 2"?"scope2":"scope3";data.push([id,f.name,f.unit,f.factor.toFixed(3),f.source,f.year,'<span class="badge '+cls+'">'+f.scope+'</span>', '<div class="factor-actions"><button class="icon-btn" title="檢視" onclick="viewFactor(\''+id+'\')">👁</button><button class="icon-btn" title="編輯" onclick="editFactor(\''+id+'\')">✎</button><button class="icon-btn danger" title="刪除" onclick="deleteFactor(\''+id+'\')">🗑</button></div>'])}});table("factorTable",["ID","名稱","單位","係數","來源","適用年度","類別","操作"],data)}
+function reportText(){var s=scopeTotals(),t=totals();return "# ESG Carbon & Energy Intelligence Report\n\n## 1. 執行摘要\n示範資料總排放："+t.toFixed(2)+" tCO₂e。\n\n## 2. 資料品質\n- 資料筆數："+rows.length+"\n- 未知排放係數："+rows.filter(function(r){return !factors[r[7]]}).length+"\n\n## 3. 碳盤查結果\n- Scope 1："+s["Scope 1"].toFixed(2)+" tCO₂e\n- Scope 2："+s["Scope 2"].toFixed(2)+" tCO₂e\n- Scope 3："+s["Scope 3"].toFixed(2)+" tCO₂e\n\n## 4. 能源分析\n目前示範資料包含三個月用電活動數據。\n\n## 5. 熱點與異常\n依單筆 CO₂e 排序辨識高排放活動。\n\n## 6. 減碳情境\n可由平台調整 Scope 2 用電減量比例即時計算。\n\n## 7. 行動建議\n1. 換入正式且適用年度的排放係數。\n2. 建立組織與營運邊界。\n3. 補充能源基線、產量與財務等決策變數。\n\n> 注意：目前排放係數為 DEMO，不可作正式盤查聲明。\n"}
+function renderReport(){document.getElementById("reportPreview").textContent=reportText()}
+function downloadReport(){var blob=new Blob(["\ufeff"+reportText()],{type:"text/markdown;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="ESG_Carbon_Energy_Report_UTF8_BOM.md";document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(a.href)},500);showToast("報告已用 UTF-8 BOM 下載")}
+function copyReport(){if(navigator.clipboard){navigator.clipboard.writeText(reportText()).then(function(){showToast("報告已複製")})}}
+function loadDemo(){rows=demoRows.slice();recalcAll();showToast("已載入示範資料")}
+function clearData(){rows=[];recalcAll();showToast("資料已清除")}
+function recalcAll(){renderDashboard();renderData();renderCarbon();renderEnergy();renderAnalytics();renderScenario();renderFactors();renderReport();renderQualityGate();renderActions();renderFactorHistory();renderROI();setTimeout(installScrollHints,0);saveLocal();showToast("已重新計算")}
+function showToast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},1800)}
+document.getElementById("fileInput").addEventListener("change",function(e){var f=e.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){var lines=String(rd.result).trim().split(/\r?\n/);rows=lines.slice(1).map(function(l){return l.split(",")}).filter(function(r){return r.length>=8});recalcAll();showToast("CSV 已載入")};rd.readAsText(f,"UTF-8")});
+initNav();loadLocal();recalcAll();installScrollHints();resetCaseFlow();setupFlowHint();setCaseMode('manual');
+</script>
+</body></html>
