@@ -1,1 +1,7 @@
+node_modules/
+.deploy/
+.wrangler/
+.dev.vars
+.env
+*.log
 
